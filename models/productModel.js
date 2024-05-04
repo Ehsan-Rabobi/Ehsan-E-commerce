@@ -30,7 +30,7 @@ const ProductSchema = new mongoose.Schema(
     },
     shopkeeperId: {
       type: String,
-      required: [true, "shopkeeperId id required"],
+      required: [true, "shopkeeper id required"],
     },
     categoryId: {
       type: [String],

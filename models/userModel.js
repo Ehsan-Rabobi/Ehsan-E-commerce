@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    shopkeeperConfirmed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

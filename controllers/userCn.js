@@ -51,12 +51,16 @@ export const login = catchAsync(async (req, res, next) => {
       message: "email or password not correct",
     });
   }
-  const token = jwt.sign({ id: validateUser.id }, process.env.JWT_SECRET);
+  const { password: cm, ...user } = validateUser;
+  const token = jwt.sign(
+    { id: validateUser.id, role: validateUser.role },
+    process.env.JWT_SECRET
+  );
   res.status(200).json({
     success: true,
     data: {
       token,
-      username: validateUser.email,
+      user,
     },
   });
 });
@@ -110,7 +114,11 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 export const shopkeeperRegister = catchAsync(async (req, res, next) => {
   const { password, role, shopkeeperConfirmed, ...userInfo } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
-  const newUser = await User.create({ password: hashedPassword, role:'shopkeeper', ...userInfo });
+  const newUser = await User.create({
+    password: hashedPassword,
+    role: "shopkeeper",
+    ...userInfo,
+  });
   res.status(201).json({
     success: true,
     message: "Register successfully",

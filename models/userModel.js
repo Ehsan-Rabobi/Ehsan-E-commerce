@@ -41,6 +41,8 @@ const UserSchema = new mongoose.Schema(
       minlength: [3, "address too short"],
       maxlength: [250, "address too long"],
       trim: true,
+      required:true,
+      default:'no address'
     },
     image: {
       type: String,

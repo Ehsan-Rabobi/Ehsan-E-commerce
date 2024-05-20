@@ -1,6 +1,8 @@
-import express from 'express'
-
-const orderRouter = express.Router()
-
+import  express  from "express";
+import { getAllOrder, shopkeeperOrderReceive, submitOrder } from "../controllers/oredrCn.js";
+const orderRouter=express.Router()
+orderRouter.route('/bank').get(submitOrder)
+orderRouter.route('/').get(getAllOrder)
+orderRouter.route('/owner').get(shopkeeperOrderReceive)
 
 export default orderRouter

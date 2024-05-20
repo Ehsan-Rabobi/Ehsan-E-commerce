@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-const mongoose = require('mongoose');
-
-
 const OrderSchema=new mongoose.Schema({
     orderList:{
         type:Array,
@@ -21,7 +18,6 @@ const OrderSchema=new mongoose.Schema({
     },
     totalAmount: {
         type: Number,
-        required: true
     },
 })
 OrderSchema.pre('save', function (next) {

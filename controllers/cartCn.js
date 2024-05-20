@@ -17,16 +17,21 @@ export const clearCart = catchAsync(async (req, res, next) => {
 });
 
 export const addToCart = catchAsync(async (req, res, next) => {
+  const { name, price, discountPrice, shopkeeperId, images, quantity } =
+    await Product.findById(req.body.productId);
   const { id } = jwt.verify(
     req.headers["authorization"].split(" ")[1],
     process.env.JWT_SECRET
   );
   if (req.body.productId && req.body.quantity) {
+    if (quantity < req.body.quantity) {
+      return next(new HandleERROR("Quantity is not enough", 400));
+    }
     const { cart } = await User.findById(id);
     let productInCart = false;
     let newCart = cart?.filter((e) => {
-      if (e.productId === req.body.productId) {
-        e.quantity += parseInt(req.body.quantity);
+      if (e.productId == req.body.productId) {
+        e.quantity = parseInt(req.body.quantity);
         if (e.quantity <= 0) {
           return false;
         }
@@ -37,8 +42,6 @@ export const addToCart = catchAsync(async (req, res, next) => {
     });
 
     if (!productInCart) {
-      const { name, price, discountPrice, shopkeeperId, images, quantity } =
-        await Product.findById(req.body.productId);
       if (quantity < req.body.quantity) {
         return next(new HandleERROR("Quantity is not enough", 400));
       }
@@ -49,6 +52,7 @@ export const addToCart = catchAsync(async (req, res, next) => {
         shopkeeperId,
         images,
         quantity: req.body.quantity,
+        productId: req.body.productId,
       });
     }
     const newCartUser = await User.findByIdAndUpdate(

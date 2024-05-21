@@ -6,7 +6,7 @@ const OrderSchema=new mongoose.Schema({
     },
     orderStatus:{
         type:String,
-        enum:['failed','paid'],
+        enum:['fail','paid'],
     },
     userId:{
         type:String,
